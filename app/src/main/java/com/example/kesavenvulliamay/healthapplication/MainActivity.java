@@ -15,8 +15,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    //start the main menu
     public void Log_In(View view){
-
         intent = new Intent(this,MainMenu.class);
         startActivity(intent);
 
@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
     // function to start activity for sign up
     public void SignUp(View view){
-
         intent = new Intent(this,SignUp.class);
         startActivity(intent);
 
