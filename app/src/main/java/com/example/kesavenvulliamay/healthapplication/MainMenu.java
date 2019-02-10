@@ -27,4 +27,9 @@ public class MainMenu extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+    public void History(View view){
+        intent = new Intent(this,History.class);
+        startActivity(intent);
+    }
 }
