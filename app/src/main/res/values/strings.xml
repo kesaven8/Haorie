@@ -5,4 +5,8 @@
     <string name="signup">Sign Up</string>
     <string name="login">Log In</string>
     <string name="confirmpassword">Confirm Password</string>
+
+
+    <string name="radiomale">Male</string>
+    <string name="radioFemale">Female</string>
 </resources>

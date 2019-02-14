@@ -324,13 +324,12 @@
                 <NumberPicker
                     android:id="@+id/picker"
                     android:layout_width="wrap_content"
-                    android:divider="@color/white"
-                    android:gravity="center"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:descendantFocusability="blocksDescendants"
-                    />
+                    android:divider="@color/white"
+                    android:gravity="center" />
 
             </LinearLayout>
 
@@ -357,20 +356,23 @@
 
 
         <RadioGroup
+            android:id="@+id/sex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
 
             <RadioButton
+                android:id="@+id/radiomale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Male"
+                android:text="@string/radiomale"
                 android:textSize="20dp"/>
             <RadioButton
+                android:id="@+id/radiofemale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Female"
+                android:text="@string/radioFemale"
                 android:textSize="20dp"/>
         </RadioGroup>
 
