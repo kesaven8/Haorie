@@ -1,5 +1,7 @@
 package com.example.kesavenvulliamay.healthapplication;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,10 +15,9 @@ import android.widget.Toast;
 
 public class Profile extends AppCompatActivity {
 
-
     private TextView displayBMI;//used to display the BMI value
 
-    private TextView displayTDEE;//
+    private TextView displayTDEE;//used to display the TDEE values
 
     private EditText heightView;//used to display the height value
 
@@ -43,6 +44,15 @@ public class Profile extends AppCompatActivity {
 
 
 
+    private Context context;// used to store values on device using Shared Preferences
+
+    private String BMI_String; // used to store the value of the bmi as a string
+
+    private String string_displayTDEE;// used to store the value of tdee
+
+    private int ActivitySelected;// used to store the value of lifestyle
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +69,11 @@ public class Profile extends AppCompatActivity {
         radioGroup = findViewById(R.id.sex);
         radioButtonFemale = findViewById(R.id.radiofemale);
         radioButtonMale = findViewById(R.id.radiomale);
+
+
+        //getting the context to be used for shared preferences
+        context = getApplicationContext();
+
 
         // setting the number picker to pick lifestyle values
         numberPicker.setMinValue(0);
@@ -112,10 +127,28 @@ public class Profile extends AppCompatActivity {
 
     }
 
+
+    // Save button will save the values as a key pair using Shared Preferences android
     public void Save(View view) {
 
         CalculateBMI();
         CalculateTDEE();
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(getString(R.string.profilevales),Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+
+        //add in string.xml
+        editor.putString(getString(R.string.age),ageView.getText().toString());
+        editor.putString(getString(R.string.weight),weightView.getText().toString());
+        editor.putString(getString(R.string.height),heightView.getText().toString());
+        editor.putString(getString(R.string.bmi),BMI_String);
+        editor.putString(getString(R.string.tdee),string_displayTDEE);
+        editor.putInt(getString(R.string.lifestyle),ActivitySelected);
+        boolean check= editor.commit();
+
+        Log.i("save",".."+check);
+
 
 
 
@@ -128,10 +161,9 @@ public class Profile extends AppCompatActivity {
             float height_int = Float.parseFloat(heightView.getText().toString()) / 100;
             float weight_int = Float.parseFloat(weightView.getText().toString());
 
-
             float bmi_int_value = (weight_int) / (height_int * height_int);
 
-            String BMI_String = String.format("%.2f", bmi_int_value);
+             BMI_String = String.format("%.2f", bmi_int_value);
 
 //            heightView.setFocusable(false);
 //            weightView.setFocusable(false);
@@ -153,8 +185,6 @@ public class Profile extends AppCompatActivity {
     /***
      * the following values are used to calculate the TDEE
      */
-
-
     /**
     *
     Sedentary = BMR x 1.2: for very little physical exercises
@@ -169,7 +199,7 @@ public class Profile extends AppCompatActivity {
 
         double bmr_value = CalculateBMR();
         double TDEE_value = 0; // initally the value is 0
-        String string_displayTDEE;
+
 
         switch (ActivityState){
 
@@ -204,7 +234,7 @@ public class Profile extends AppCompatActivity {
 
         try {
 
-            string_displayTDEE = String.format("%.2f", TDEE_value);
+            string_displayTDEE = String.format("%.0f", TDEE_value);
             displayTDEE.setText(string_displayTDEE);
 
         } catch (Exception e) {
