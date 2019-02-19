@@ -16,6 +16,8 @@ public class Profile extends AppCompatActivity {
 
     private TextView displayBMI;//used to display the BMI value
 
+    private TextView displayTDEE;//
+
     private EditText heightView;//used to display the height value
 
     private EditText ageView;//used to get the age value
@@ -50,6 +52,7 @@ public class Profile extends AppCompatActivity {
         //getting refences for the views
         numberPicker = findViewById(R.id.picker);
         displayBMI = findViewById(R.id.displaybmi);
+        displayTDEE = findViewById(R.id.displayTDEE);
         heightView = findViewById(R.id.height);
         ageView = findViewById(R.id.Age);
         weightView = findViewById(R.id.weight);
@@ -57,51 +60,47 @@ public class Profile extends AppCompatActivity {
         radioButtonFemale = findViewById(R.id.radiofemale);
         radioButtonMale = findViewById(R.id.radiomale);
 
-
+        // setting the number picker to pick lifestyle values
         numberPicker.setMinValue(0);
-
         numberPicker.setMaxValue(value.length - 1);
-
         numberPicker.setDisplayedValues(value);
-
         numberPicker.setScrollbarFadingEnabled(true);
-
         numberPicker.setScrollbarFadingEnabled(true);
-
         numberPicker.setWrapSelectorWheel(true);
-
 
         // the listener aims to help the user to choose between
         numberPicker.setOnScrollListener(new NumberPicker.OnScrollListener() {
             @Override
             public void onScrollStateChange(NumberPicker numberPicker, int i) {
-
-
                 int ActivitySelected = numberPicker.getValue();
 
                 Log.i("log messsge", "number is .. " + ActivitySelected);
 
-
                 switch (ActivitySelected){
                     case 0:{
                         Toast.makeText(getApplicationContext(),"Very little physical exercises" ,Toast.LENGTH_SHORT).show();
+                        ActivityState = 0;
                         break;
                     }
                     case 1:{
                         Toast.makeText(getApplicationContext(),"Individuals that exercise lightly from one to three times a week",Toast.LENGTH_SHORT).show();
+                        ActivityState = 1;
                         break;
                     }
                     case 2:{
                         Toast.makeText(getApplicationContext(),"for individuals that perform moderate exercises three to 5\n" +
                                 "times per week",Toast.LENGTH_SHORT).show();
+                        ActivityState = 2;
                         break;
                     }
                     case 3:{
                         Toast.makeText(getApplicationContext(),"Hard exercises that are performed six - seven days per week",Toast.LENGTH_SHORT).show();
+                        ActivityState = 3;
                         break;
                     }
                     case 4:{
                         Toast.makeText(getApplicationContext(),"For hard daily exercises / physical job",Toast.LENGTH_SHORT).show();
+                        ActivityState = 4;
                         break;
                     }
                 }
@@ -116,14 +115,13 @@ public class Profile extends AppCompatActivity {
     public void Save(View view) {
 
         CalculateBMI();
+        CalculateTDEE();
 
-        CalculateBMR();
 
 
     }
 
     public void CalculateBMI() {
-
 
         try {
 
@@ -135,8 +133,8 @@ public class Profile extends AppCompatActivity {
 
             String BMI_String = String.format("%.2f", bmi_int_value);
 
-            heightView.setFocusable(false);
-            weightView.setFocusable(false);
+//            heightView.setFocusable(false);
+//            weightView.setFocusable(false);
 
             displayBMI.setText(BMI_String);
 
@@ -152,34 +150,85 @@ public class Profile extends AppCompatActivity {
     }
 
 
-    public void CalculateTDEE() {
+    /***
+     * the following values are used to calculate the TDEE
+     */
+
+
+    /**
+    *
+    Sedentary = BMR x 1.2: for very little physical exercises
+    Lightly Active = BMR x 1.375: for individuals that exercise lightly from one to three times a
+    week
+    Moderately Active = BMR x 1.55: for individuals that perform moderate exercises three to 5
+    times per week
+    Very Active = BMR x 1.725: for hard exercises that are performed six to seven days per week
+    Extremely Active = BMR x 1.9: for hard daily exercises / physical job.
+    **/
+    public double CalculateTDEE() {
+
+        double bmr_value = CalculateBMR();
+        double TDEE_value = 0; // initally the value is 0
+        String string_displayTDEE;
+
+        switch (ActivityState){
+
+            case 0:{
+                TDEE_value = bmr_value * 1.2;
+                Log.i("TDEE",".. "+TDEE_value);
+                break;
+
+            }
+            case 1 :{
+                TDEE_value = bmr_value * 1.375;
+                Log.i("TDEE",".. "+TDEE_value);
+                break;
+            }
+            case 2 :{
+                TDEE_value = bmr_value * 1.55;
+                Log.i("TDEE",".. "+TDEE_value);
+                break;
+            }
+            case 3 :{
+                TDEE_value = bmr_value * 1.725;
+                Log.i("TDEE",".. "+TDEE_value);
+                break;
+            }
+            case 4 :{
+                TDEE_value = bmr_value * 1.9;
+                Log.i("TDEE",".. "+TDEE_value);
+                break;
+            }
+
+        }
 
         try {
 
+            string_displayTDEE = String.format("%.2f", TDEE_value);
+            displayTDEE.setText(string_displayTDEE);
 
         } catch (Exception e) {
-
+            Toast.makeText(this,""+e.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
         }
+        return TDEE_value;
     }
 
     // using the Harris-Benedict Equation
     // for men :BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) + 5
     // For women : BMR = (10 × weight in kg) + (6.25 × height in cm) - (5 × age in years) - 161
+    // This function returns the BMi value as double
     public double CalculateBMR() {
 
         int selected_sex = radioGroup.getCheckedRadioButtonId();
         double bmr = 0;
-
-
         try {
-
             if (selected_sex == radioButtonMale.getId()) {
 
                 bmr = (10 * Float.parseFloat(weightView.getText().toString())) +
                         (6.25 * Float.parseFloat(heightView.getText().toString()))
                         - (5 * Float.parseFloat(ageView.getText().toString())) + 5;
 
-                Toast.makeText(this, "male is pressed" + bmr, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "male is pressed"+  " BMR is :"+ + bmr, Toast.LENGTH_SHORT).show();
 
             } else if (selected_sex == radioButtonFemale.getId()) {
 
@@ -187,7 +236,7 @@ public class Profile extends AppCompatActivity {
                         (6.25 * Float.parseFloat(heightView.getText().toString()))
                         - (5 * Float.parseFloat(ageView.getText().toString())) - 161;
 
-                Toast.makeText(this, "female is pressed  " + bmr, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "female is pressed  " +  " BMR is :"+ bmr, Toast.LENGTH_SHORT).show();
             } else {
 
                 Toast.makeText(this, "Select Gender", Toast.LENGTH_SHORT).show();
@@ -196,12 +245,9 @@ public class Profile extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("error", e.getLocalizedMessage());
         }
-
         return bmr;
 
-
     }
-
 
 }
 
