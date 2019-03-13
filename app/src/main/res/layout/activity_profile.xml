@@ -63,7 +63,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="BMI"
+                        android:text= "@string/bmi"
                         android:textSize="30dp" />
 
                     <TextView
@@ -87,7 +87,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="TDEE"
+                        android:text="@string/tdee"
                         android:textSize="30dp" />
 
                     <TextView
@@ -136,7 +136,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:textSize="20dp"
-                    android:text="Age"/>
+                    android:text="@string/age"/>
 
             </LinearLayout>
 
@@ -193,7 +193,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:textSize="20dp"
-                    android:text="Height"/>
+                    android:text="@string/height"/>
 
             </LinearLayout>
 
@@ -251,7 +251,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:textSize="20dp"
-                    android:text="Weight"/>
+                    android:text="@string/weight"/>
 
             </LinearLayout>
 
@@ -310,7 +310,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:textSize="20dp"
-                    android:text="Lifestyle"/>
+                    android:text="@string/lifestyle"/>
 
             </LinearLayout>
 
@@ -398,7 +398,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Save"
+                android:text="@string/save"
                 android:onClick="Save"
                 style="@style/ThemeOverlay.AppCompat.Light"
                 />
@@ -415,7 +415,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edit"
+                android:text="@string/edit"
                 android:onClick="Save"
                 style="@style/ThemeOverlay.AppCompat.Light"
                 />

@@ -43,7 +43,7 @@
             android:alpha="0.8"
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground"
-            android:onClick="Test"
+            android:onClick="TakePicture"
             app:cardElevation="5dp">
 
             <LinearLayout
