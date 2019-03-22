@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //This function is used to request all the permission used for this system
     public void RequestPermission(){
 
         // If permission is not granted

@@ -2,16 +2,21 @@ package com.example.kesavenvulliamay.healthapplication;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class TakePhoto extends AppCompatActivity {
 
@@ -19,7 +24,11 @@ public class TakePhoto extends AppCompatActivity {
 
     private ImageView imageView;
 
-    private String currentPhotoPath;
+    private Bitmap imageBitmap;
+
+    private InputStream inputStream;
+
+
 
 
     @Override
@@ -40,30 +49,93 @@ public class TakePhoto extends AppCompatActivity {
 
     }
 
+
+    // can add the preprocess image here
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageView.setImageBitmap(imageBitmap);
+             imageBitmap = (Bitmap) extras.get("data");
+             imageView.setImageBitmap(imageBitmap);
+
         }
     }
 
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+    public class Send_Image_API extends AsyncTask<String,Void,String>{
 
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
+
+        @Override
+        protected String doInBackground(String... urls) {
+
+
+            try {
+
+                URL url = new URL(urls[0]);
+                String result ="";
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                inputStream = httpURLConnection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuilder str = new StringBuilder();
+
+                while ((result = reader.readLine()) != null) {
+
+                    str.append(result);
+
+                }
+
+                result = str.toString();
+
+                return result;
+
+
+            }
+
+            catch (Exception e){
+                Log.e("Error",e.getMessage());
+            }
+
+            return null;
+        }
+    }
+
+
+    // Function that is called to predict the result
+    public void Predict(View view){
+
+
+        // convert  the image to string
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+        String encoded_image = Base64.encodeToString(byteArrayOutputStream.toByteArray(),Base64.URL_SAFE);
+
+
+
+        //build the string for the api
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("http://127.0.0.1:3333/pre?");
+        stringBuilder.append("img_encode=");
+        stringBuilder.append(encoded_image);
+        String api_call= stringBuilder.toString();
+        Log.i("api call is ",api_call);
+
+        try{
+
+            Send_Image_API send_image_api = new Send_Image_API();
+            String predict_answer = send_image_api.execute(api_call).get();
+
+            Log.i("answer is ",""+predict_answer);
+
+        }catch(Exception e){
+
+            Log.e("Error",e.getMessage()+"\n"+ e.getLocalizedMessage());
+
+
+        }
+
     }
 
 
