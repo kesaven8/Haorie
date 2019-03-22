@@ -11,8 +11,6 @@ public class MainMenu extends AppCompatActivity {
 
     private Intent intent;// used to start new activity
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-
 
 
     @Override

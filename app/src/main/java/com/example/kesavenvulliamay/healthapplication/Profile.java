@@ -50,7 +50,6 @@ public class Profile extends AppCompatActivity {
 
     private String string_displayTDEE;// used to store the value of tdee
 
-    private int ActivitySelected;// used to store the value of lifestyle
 
 
 
@@ -69,6 +68,8 @@ public class Profile extends AppCompatActivity {
         radioGroup = findViewById(R.id.sex);
         radioButtonFemale = findViewById(R.id.radiofemale);
         radioButtonMale = findViewById(R.id.radiomale);
+
+
 
 
         //getting the context to be used for shared preferences
@@ -125,8 +126,15 @@ public class Profile extends AppCompatActivity {
 
 
 
+
+
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Set_values();
+    }
 
     // Save button will save the values as a key pair using Shared Preferences android
     public void Save(View view) {
@@ -140,14 +148,23 @@ public class Profile extends AppCompatActivity {
 
         //add in string.xml
         editor.putString(getString(R.string.age),ageView.getText().toString());
+        ageView.setEnabled(false);
+
         editor.putString(getString(R.string.weight),weightView.getText().toString());
+        weightView.setEnabled(false);
+
         editor.putString(getString(R.string.height),heightView.getText().toString());
+        heightView.setEnabled(false);
+
         editor.putString(getString(R.string.bmi),BMI_String);
+        editor.putInt(getString(R.string.Gender),radioGroup.getCheckedRadioButtonId());
         editor.putString(getString(R.string.tdee),string_displayTDEE);
-        editor.putInt(getString(R.string.lifestyle),ActivitySelected);
+        editor.putInt(getString(R.string.lifestyle),numberPicker.getValue());
         boolean check= editor.commit();
 
         Log.i("save",".."+check);
+
+        Toast.makeText(this,"Successfully Saved",Toast.LENGTH_LONG).show();
 
 
 
@@ -165,8 +182,7 @@ public class Profile extends AppCompatActivity {
 
              BMI_String = String.format("%.2f", bmi_int_value);
 
-//            heightView.setFocusable(false);
-//            weightView.setFocusable(false);
+
 
             displayBMI.setText(BMI_String);
 
@@ -258,7 +274,7 @@ public class Profile extends AppCompatActivity {
                         (6.25 * Float.parseFloat(heightView.getText().toString()))
                         - (5 * Float.parseFloat(ageView.getText().toString())) + 5;
 
-                Toast.makeText(this, "male is pressed"+  " BMR is :"+ + bmr, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "male is pressed"+  " BMR is :"+ + bmr, Toast.LENGTH_SHORT).show();
 
             } else if (selected_sex == radioButtonFemale.getId()) {
 
@@ -266,7 +282,7 @@ public class Profile extends AppCompatActivity {
                         (6.25 * Float.parseFloat(heightView.getText().toString()))
                         - (5 * Float.parseFloat(ageView.getText().toString())) - 161;
 
-                Toast.makeText(this, "female is pressed  " +  " BMR is :"+ bmr, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, "female is pressed  " +  " BMR is :"+ bmr, Toast.LENGTH_SHORT).show();
             } else {
 
                 Toast.makeText(this, "Select Gender", Toast.LENGTH_SHORT).show();
@@ -277,6 +293,47 @@ public class Profile extends AppCompatActivity {
         }
         return bmr;
 
+    }
+
+    // this function retrives values from the shared preferences and plug it to the UI
+    public void Set_values(){
+        SharedPreferences pref = getSharedPreferences(getString(R.string.profilevales), MODE_PRIVATE);
+
+        if(pref.contains(getString(R.string.age))){
+            ageView.setText(pref.getString((getString(R.string.age)),"default" ));
+            ageView.setEnabled(false);
+
+            heightView.setText(pref.getString(getString(R.string.height),"default"));
+            heightView.setEnabled(false);
+
+            weightView.setText(pref.getString(getString(R.string.weight),"default"));
+            weightView.setEnabled(false);
+
+            numberPicker.setValue(pref.getInt(getString(R.string.lifestyle),0));
+
+            radioGroup.check(pref.getInt(getString(R.string.Gender),0));
+
+            displayBMI.setText(pref.getString(getString(R.string.bmi),"default"));
+
+            displayTDEE.setText((pref.getString(getString(R.string.tdee),"default")));
+
+
+
+        }
+
+
+
+
+
+
+    }
+
+
+    public void Edit(View view){
+
+        ageView.setEnabled(true);
+        heightView.setEnabled(true);
+        weightView.setEnabled(true);
     }
 
 }

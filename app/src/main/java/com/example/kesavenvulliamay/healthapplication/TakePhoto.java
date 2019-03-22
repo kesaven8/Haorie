@@ -10,6 +10,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -99,6 +100,7 @@ public class TakePhoto extends AppCompatActivity {
 
             return null;
         }
+
     }
 
 
@@ -109,6 +111,7 @@ public class TakePhoto extends AppCompatActivity {
         // convert  the image to string
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         imageBitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+        
         String encoded_image = Base64.encodeToString(byteArrayOutputStream.toByteArray(),Base64.URL_SAFE);
 
 
@@ -129,12 +132,17 @@ public class TakePhoto extends AppCompatActivity {
 
             Log.i("answer is ",""+predict_answer);
 
+
         }catch(Exception e){
 
             Log.e("Error",e.getMessage()+"\n"+ e.getLocalizedMessage());
+            Toast.makeText(this,"API call failed",Toast.LENGTH_SHORT).show();
+
 
 
         }
+
+       // Toast.makeText(this,"API call successful",Toast.LENGTH_SHORT).show();
 
     }
 

@@ -17,6 +17,7 @@
     <string name="height">Height</string>
     <string name="weight">Weight</string>
     <string name="lifestyle">Lifestyle</string>
+    <string name="Gender">Gender</string>
 
     <!--Names of buttons  -->
     <string name="save">Save</string>
