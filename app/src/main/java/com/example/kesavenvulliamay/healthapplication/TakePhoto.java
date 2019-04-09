@@ -9,8 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -29,6 +32,10 @@ public class TakePhoto extends AppCompatActivity {
 
     private InputStream inputStream;
 
+    private EditText food_name;
+
+    private EditText calorie_value;
+
 
 
 
@@ -38,6 +45,12 @@ public class TakePhoto extends AppCompatActivity {
         setContentView(R.layout.activity_take_photo);
 
         imageView = findViewById(R.id.imageView);
+
+        food_name = findViewById(R.id.foodname);
+
+        calorie_value = findViewById(R.id.calorie_value);
+
+
 
 
         // start the activity for the intent
@@ -111,7 +124,7 @@ public class TakePhoto extends AppCompatActivity {
         // convert  the image to string
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         imageBitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
-        
+
         String encoded_image = Base64.encodeToString(byteArrayOutputStream.toByteArray(),Base64.URL_SAFE);
 
 
@@ -130,6 +143,29 @@ public class TakePhoto extends AppCompatActivity {
             Send_Image_API send_image_api = new Send_Image_API();
             String predict_answer = send_image_api.execute(api_call).get();
 
+
+
+
+
+            JSONObject jsonObject = new JSONObject(predict_answer);
+
+            String predict= (String) jsonObject.get("prediction");
+
+            food_name.setText(predict);
+
+
+            Log.i("prediction is", " "+ predict);
+
+            String calorie = (String) jsonObject.get("calorie");
+
+            calorie_value.setText(calorie);
+
+            Log.i("calorie is", " "+ calorie);
+
+
+
+
+
             Log.i("answer is ",""+predict_answer);
 
 
@@ -137,8 +173,6 @@ public class TakePhoto extends AppCompatActivity {
 
             Log.e("Error",e.getMessage()+"\n"+ e.getLocalizedMessage());
             Toast.makeText(this,"API call failed",Toast.LENGTH_SHORT).show();
-
-
 
         }
 
