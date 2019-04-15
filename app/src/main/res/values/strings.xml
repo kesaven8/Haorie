@@ -23,6 +23,25 @@
     <string name="save">Save</string>
     <string name="edit">Edit</string>
 
+    <string name="acc">Create Account</string>
+
 
     <string name="profilevales">profilevalues</string>
+
+
+    <!-- Description of BMI values -->
+    <string name="bmides">The BMI scores give an indirect measure of body fat. Depending on the BMI value calculated you may be underweight, healthy weight, overweight or obese.</string>
+    <string name="BMIinter">Values</string>
+
+    <!--Description of tdee-->
+    <string name="cmiinfo">A BMI between 18.5 and 25 indicates a normal weight. A BMI of less than 18.5 is considered underweight. A BMI between 25 and 29.9 is considered overweight. A BMI of 30 or higher is considered obese</string>
+    <string name="tdeedef">TDEE is the total number of calories you burn each day. To prevent weight gain, energy intake or calorie intake must be balanced with energy expenditure.To gain weight you eat more than your TDEE and to lose weight you eat less.</string>
+
+    <!--Calorie Values-->
+    <string name="calorie">Calorie</string>
+    <string name="caloriedef">In nutrition, calories refer to the energy people get from the food and drink they consume, and the energy they use in physical activity. Calories are essential for human health.</string>
+
+    <string name="protein">Protein</string>
+    <string name="proref">The National Academy of Medicine recommends that adults get a minimum of 0.8 grams of protein for every kilogram of body weight per day, or just over 7 grams for every 20 pounds of body weight</string>
+
 </resources>

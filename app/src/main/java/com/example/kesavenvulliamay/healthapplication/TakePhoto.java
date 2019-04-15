@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -161,8 +162,6 @@ public class TakePhoto extends AppCompatActivity {
             calorie_value.setText(calorie);
 
             Log.i("calorie is", " "+ calorie);
-
-
 
 
 

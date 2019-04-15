@@ -1,11 +1,9 @@
 package com.example.kesavenvulliamay.healthapplication;
 
 import android.content.Intent;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 public class MainMenu extends AppCompatActivity {
 
@@ -19,12 +17,7 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
     }
 
-    // This is a test function for the buttons in the application
-    public void Test(View view){
-
-        Toast.makeText(this,"i am alive",Toast.LENGTH_LONG).show();
-    }
-
+    // function to navigate to the profile page
     public void Profile(View view){
 
         intent = new Intent(this,Profile.class);
@@ -32,14 +25,21 @@ public class MainMenu extends AppCompatActivity {
 
     }
 
+    // function to show history of the application
     public void History(View view){
         intent = new Intent(this,History.class);
         startActivity(intent);
     }
 
+    // function to start take picture activity
     public void TakePicture(View view){
 
         intent = new Intent(this,TakePhoto.class);
+        startActivity(intent);
+    }
+
+    public void InfoPage(View view){
+        intent = new Intent(this, Info.class);
         startActivity(intent);
     }
 }
